@@ -1,0 +1,57 @@
+{% extends 'prefabs/user-dashboard-base.html' %}
+{% load crispy_forms_filters %}
+{% block title %} View Account {% endblock title %}
+{% block content %}
+    <section class="login-reg">
+        <div class="overlay pt-120">
+            <div class="container">
+                <div>
+                    <div>
+                        <div class="center-rows" style="text-align: center; padding-top: 50px;">
+                            <h1>View User Account</h1>
+                            <h6>For security reasons, please contact VG Customer Services to view your password.</h6>
+                            <p>Go back to homepage? <a href="/./">Go Back</a></p>
+                        </div>
+                        <form method="POST">
+                            {% csrf_token %}
+                            <div class="center-rows" style="text-align: center;">
+                                <div style="margin: 10px 10px 10px 10px; border: 2px solid cadetblue; border-radius: 10px; padding: 30px;">
+                                    <div class="userInfo">
+                                        <h4>{{comment.full_name|title}}</h4>
+                                        {% if account.account_status == "in-active" %}
+                                            <p class="text-danger">{{account.account_status|title}}</p>
+                                        {% else %}
+                                            <p class="text-success">{{account.account_status|title}}</p>
+                                        {% endif %}
+                                    </div>
+                                    <div><p style="font-weight: bold;">Username: <span class="">{{ account.user.username }}</span></p></div>
+                                    <div><p style="font-weight: bold;">Email: <span class="">{{ comment.user.email }}</span></p></div>
+                                    <div><p style="font-weight: bold;">Account ID: <span class="">{{ account.account_id }}</span></p></div>
+                                    <!-- <div><p style="font-weight: bold;">Account Pin: <span class="">{ account.account_pin }</span></p></div> -->
+                                    <div>
+                                        <p style="font-weight: bold;">Balance: <span>{{ account.balance }}</span>
+                                            {% if comment.currency == "GB"  %}
+                                            <span class="text-success">{{ comment.currency }}</span>
+                                            {% elif comment.currency == "Dollar"  %}
+                                            <span class="text-success">{{ comment.currency }}</span>
+                                            {% elif comment.currency == "Euro"  %}
+                                            <span class="text-success">{{ comment.currency }}</span>
+                                            {% endif %}
+                                        </p>
+                                    </div>
+                                    <div><p style="font-weight: bold;">Currency: <span class="">{{ comment.currency }}</span></p></div>
+                                    <div><p style="font-weight: bold;">Date of Birth: <span>{{ comment.date_of_birth|date:"d M, Y" }}</span></p></div>
+                                    <div><p style="font-weight: bold;">Account Created Date: <span>{{ account.created_date|date:"d M, Y" }}</span></p></div>
+                                    <div style="text-align: right;">
+                                        <a style="border: 1px solid; border-radius: 20px; background: pink; padding: 10px" href="/logout/">Log Out</a>
+                                        <a style="border: 1px solid; border-radius: 20px; background: pink; padding: 10px" href="javascript: void(0)" class="delete">Delete Account</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock content %}

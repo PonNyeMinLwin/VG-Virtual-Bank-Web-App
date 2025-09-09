@@ -1,0 +1,49 @@
+{% extends 'prefabs/user-dashboard-base.html' %}
+{% load crispy_forms_filters %}
+{% block title %} Request Payment {% endblock title %}
+{% block content %}
+    <section>
+        <div>
+            <div class="container">
+                <div>
+                    <div>
+                        <div class="center-rows" style="text-align: center; padding-top: 50px;">
+                            <h1>2/3 Request Money to User ID</h1>
+                            <h3>Step 2: Select Amount and Send Request</h3>
+                            <h6>Send a payment request to any user, quickly and efficiently!</h6>
+                            <p>Go back to homepage? <a href="/./">Homepage</a></p>
+                        </div>
+                        <div class="center-rows" style="text-align: center;">
+                            <div style="margin: 10px 0 10px 0; border: 2px solid cadetblue; border-radius: 10px;">
+                                <div style="padding-bottom: 20px;">
+                                    <div style="padding-top: 20px;">
+                                        <div><p style="font-weight: bold;">Account ID: <span class="">{{ account.account_id }}</span></p></div>
+                                        <div><p style="font-weight: bold;">Full Name: <span class="">{{ account.comment.full_name }}</span></p></div>
+                                        <div><p style="font-weight: bold;">Email: <span class="">{{ account.user.email }}</span></p></div>
+                                        <form action="{% url 'process-request' account.account_id %}" method="POST">
+                                            {% csrf_token %}
+                                            <div>
+                                                <label style="font-weight: bold;">Request Amount:
+                                                    <input id="request_amount" name="request_amount" placeholder="0.00" type="number">
+                                                    <select>
+                                                        <option>GBP</option>
+                                                        <option>USD</option>
+                                                        <option>EUR</option>
+                                                    </select>
+                                                </label>
+                                            </div>
+                                            <div style="padding-top: 30px;">
+                                                <button style="border-radius: 10px; background: pink; padding: 5px;"><a href="/find-request-user-id/" style="text-decoration: none; color: black;">Change Accounts</a></button>
+                                                <button type="submit" style="border-radius: 10px; background: pink; padding: 5px;">Send Request</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock content %}

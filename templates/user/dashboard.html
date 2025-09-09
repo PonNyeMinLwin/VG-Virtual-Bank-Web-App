@@ -1,0 +1,48 @@
+{% extends 'prefabs/user-dashboard-base.html' %}
+{% load crispy_forms_filters %}
+{% block title %} Dashboard {% endblock title %}
+{% block content %}
+    <section>
+        <div>
+            <div class="container">
+                <div>
+                    <div>
+                        <div class="center-rows" style="text-align: center; padding-top: 50px;">
+                            <h1>Dashboard</h1>
+                            <h6>See all your notifications, actions, and transaction history here!</h6>
+                            <p>Go back to homepage? <a href="/./">Go Back</a></p>
+                        </div>
+                        <div>
+                            <div style="margin: 10px 10px 10px 10px; border: 2px solid cadetblue; border-radius: 10px; padding: 30px; text-align: center;">
+                                <div style="padding-bottom: 20px;">
+                                    <h2>Welcome to your VG Dashboard, {{comment.full_name|title}}!</h2>
+                                    <h5 class="text-success">{{ account.balance }} {{ comment.currency }}</h5>
+                                </div>
+                                <div><p style="font-weight: bold;">Account ID: <span class="">{{ account.account_id }}</span></p></div>
+                                <div><p style="font-weight: bold;">Username: <span class="">{{ account.user.username }}</span></p></div>
+                                <div><p style="font-weight: bold;">Email: <span>{{ comment.user.email }}</span></p></div>
+                                <div><p style="font-weight: bold;">Currency: <span class="">{{ comment.currency }}</span></p></div>
+                                <div style="padding-top: 10px;">
+                                    <a style="border: 1px solid; border-radius: 5px; background: pink; padding: 5px; text-decoration: none;" href="/find-user-id/">Make A Payment</a>
+                                    <a style="border: 1px solid; border-radius: 5px; background: pink; padding: 5px; text-decoration: none;" href="/find-request-user-id/">Request A Payment</a>
+                                    <a style="border: 1px solid; border-radius: 5px; background: pink; padding: 5px; text-decoration: none;" href="/view-transactions/">View All Transactions</a>
+                                </div>
+                            </div>
+                            <div style="margin: 10px 10px 10px 10px; border: 2px solid cadetblue; border-radius: 10px; padding: 30px;">
+                                <div><h3>Transaction History</h3></div>
+                                <form action="" method="POST">
+                                        <div style="padding-bottom: 20px">
+                                            <input type="text" name="transaction_id" style="width: 900px; text-align: center;" placeholder="Enter Transaction ID">
+                                            <button type="submit">Select</button>
+                                            <button type="reset"><a style="text-decoration: none; color: black;" href="/dashboard/">See All Transactions</a></button>
+                                            <p style="float: right">{{ query }}</p>
+                                        </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock content %}

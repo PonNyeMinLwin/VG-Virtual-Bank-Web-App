@@ -1,0 +1,75 @@
+{% extends 'prefabs/user-dashboard-base.html' %}
+{% load crispy_forms_filters %}
+{% block title %} Payment Transfer {% endblock title %}
+{% block content %}
+    <section>
+        <div>
+            <div class="container">
+                <div>
+                    <div>
+                        <div class="center-rows" style="text-align: center; padding-top: 50px;">
+                            <h1>2/3 Transfer Money to User ID</h1>
+                            <h3>Step 2: Select Amount and Confirm Payment</h3>
+                            <h6>Choose how much to transfer and relax, knowing your money is in safe hands!</h6>
+                            <p>Go back to homepage? <a href="/./">Homepage</a></p>
+                        </div>
+                        <div class="center-rows" style="text-align: center;">
+                            <div style="margin: 10px 0 10px 0; border: 2px solid cadetblue; border-radius: 10px;">
+                                <div style="padding-bottom: 20px;">
+                                    <div style="padding-top: 20px;">
+                                        <div><p style="font-weight: bold;">Account ID: <span class="">{{ account.account_id }}</span></p></div>
+                                        <div><p style="font-weight: bold;">Full Name: <span class="">{{ account.comment.full_name }}</span></p></div>
+                                        <div><p style="font-weight: bold;">Email: <span class="">{{ account.user.email }}</span></p></div>
+                                        <form action="{% url 'process-payment' account.account_id %}" method="POST">
+                                            {% csrf_token %}
+                                            <div>
+                                                <label style="font-weight: bold;">Transfer Amount:
+                                                    <input id="transfer_amount" name="transfer-amount" onkeyup="CalculateBalanceFunction()" placeholder="{{ request.user.account.balance }}" type="number">
+                                                    <select>
+                                                        <option>GBP</option>
+                                                        <option>USD</option>
+                                                        <option>EUR</option>
+                                                    </select>
+                                                </label>
+                                                <p style="padding-top: 20px; font-weight: bold;">Remaining Balance: <span class="">{{ request.user.account.balance }}</span></p>
+                                                <p id="new_balance" style="font-weight: bold;"></p>
+                                                <p id="total_pay" style="font-weight: bold;"></p>
+                                                <!-- <p style="font-weight: bold;" class="text-danger" id="error_msg">Error!</p> -->
+                                            </div>
+                                            <!-- JS Script for Balance Calculations (maybe also for currency conversions) -->
+                                            <script>
+                                                function CalculateBalanceFunction() {
+                                                    let current_balance = "{{ request.user.account.balance }}" // Gets user balance in real time
+                                                    let new_balance = document.getElementById("new_balance")
+                                                    let transfer_amount = document.getElementById("transfer_amount").value // Gets user input in real time
+                                                    let error_msg = document.getElementById("error_msg")
+                                                    let total_pay = document.getElementById("total_pay")
+
+                                                    let error_msg_arrs = []
+                                                    let calc = current_balance - transfer_amount; // Calculates remaining balance in real time
+
+                                                    // Found this calculation for putting commas in money displays
+                                                    //new_balance.innerHTML = `New Balance: ${calc.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`
+                                                    new_balance.innerHTML = `New Balance: ${calc}`
+                                                    total_pay.innerHTML = `Final Amount to Transfer: ${transfer_amount}`
+
+
+                                                    // If the remaining balance is less than 0, show error message and change colors
+                                                    if(calc < 0) { new_balance.style.color = "red" } else { new_balance.style.color = "green" }
+                                                }
+                                            </script>
+                                            <div style="padding-top: 30px;">
+                                                <button style="border-radius: 10px; background: pink; padding: 5px;"><a href="/find-user-id/" style="text-decoration: none; color: black;">Change Accounts</a></button>
+                                                <button type="submit" style="border-radius: 10px; background: pink; padding: 5px;">Confirm Payment</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock content %}

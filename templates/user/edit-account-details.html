@@ -1,0 +1,30 @@
+{% extends 'prefabs/user-dashboard-base.html' %}
+{% load crispy_forms_filters %}
+{% block title %} Edit Account Details {% endblock title %}
+{% block content %}
+    {% load static %}
+    <section class="login-reg">
+        <div class="overlay pt-120">
+            <div class="container">
+                <div>
+                    <div>
+                        <div class="center-rows" style="text-align: center; padding-top: 50px;">
+                            <h1>Edit User Account Details</h1>
+                            <h3>Personalise your VG Experience!</h3>
+                            <p>Go back to homepage? <a href="/./">Go Back</a></p>
+                        </div>
+                        <form method="POST">
+                            {% csrf_token %}
+                            <div class="center-rows" style="text-align: center;">
+                                <div style="margin: 10px 10px 10px 10px; border: 2px solid cadetblue; border-radius: 10px; padding: 30px;">
+                                    {{ form|crispy }}
+                                </div>
+                                <button class="" type="submit">Edit Account</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock content %}

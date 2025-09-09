@@ -1,0 +1,22 @@
+{% extends "prefabs/base.html" %}
+{% load crispy_forms_filters %}
+{% block title %} Logout {% endblock title %}
+{% block content %}
+    {% load static %}
+    <section class="login-reg">
+        <div class="overlay pt-120">
+            <div class="container">
+                <div>
+                    <div>
+                        <div class="center-rows" style="text-align: center;">
+                            <h1>Logged Out!</h1>
+                            <h3>Thank you for using Very Good Virtual Bank!</h3>
+                            <p>Want to log back in? <a href="/login/">Login</a></p>
+                            <p>Go back to guest homepage? <a href="/./">Go Back</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock content %}

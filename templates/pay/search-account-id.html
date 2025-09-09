@@ -1,0 +1,52 @@
+{% extends 'prefabs/user-dashboard-base.html' %}
+{% load crispy_forms_filters %}
+{% block title %} Search User ID {% endblock title %}
+{% block content %}
+    <section>
+        <div>
+            <div class="container">
+                <div>
+                    <div>
+                        <div class="center-rows" style="text-align: center; padding-top: 50px;">
+                            <h1>1/3 Transfer Money to User ID</h1>
+                            <h3>Step 1: Search User Account IDs</h3>
+                            <h6>Find and select user Account IDs to effortlessly begin transferring money!</h6>
+                            <p>Go back to homepage? <a href="/./">Go Back</a></p>
+                        </div>
+                        <div class="center-rows" style="text-align: center;">
+                            <div style="margin: 10px 10px 10px 10px; border: 2px solid cadetblue; border-radius: 10px; padding: 30px;">
+                                <div style="padding-bottom: 20px">
+                                    <form action="" method="POST">
+                                        {% csrf_token %}
+                                        <div style="padding-bottom: 20px">
+                                            <input type="text" name="account_id" style="width: 900px; text-align: center;" placeholder="Enter User Account ID">
+                                            <button type="submit">Select</button>
+                                            <!-- This button can be replaced with 'if query' if VG gets a lot of users.
+                                             When doing so, accounts will only show when a search has been inputted by the user -->
+                                            <button type="reset"><a style="text-decoration: none; color: black;" href="/find-user-id/">See All Accounts</a></button>
+                                            <p style="float: right">{{ query }}</p>
+                                        </div>
+                                    </form>
+                                    <div class="accountsList">
+                                        {% for account in accounts %}
+                                            <div>
+                                                <p style="font-weight: bold;">
+                                                    <span style="float: left; padding-left: 20px;">ID: {{ account.account_id }}</span>
+                                                    <span style="padding-right: 80px">{{ account.comment.full_name }}</span>
+                                                    <span style="padding-left: 80px">{{ account.user.email }}</span>
+                                                    <a style="border: 1px solid; border-radius: 5px; background: pink; padding: 5px; text-decoration: none; float: right;" href="/send-money/{{ account.account_id }}">Choose</a>
+                                                </p>
+                                            </div>
+                                        {% empty %}
+                                            <div><h4>No accounts found with this ID!</h4></div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock content %}

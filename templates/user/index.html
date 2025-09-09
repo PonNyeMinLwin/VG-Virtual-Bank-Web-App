@@ -1,0 +1,36 @@
+{% extends 'prefabs/base.html' %}
+{% block title %}{% if request.user.is_authenticated %}User Homepage{% else %}Guest Homepage{% endif %}{% endblock title %}
+
+{% block content %}
+    {% if request.user.is_authenticated %}
+        <div style="text-align: center; padding-top: 50px; padding-bottom: 20px;">
+            <h1>Welcome to Very Good Virtual Bank, {{ request.user.first_name|title }} {{ request.user.last_name|title }}</h1>
+            <h6>This minimalistic page will allow you to use all of VG's functionalities without distractions! </h6>
+        </div>
+        <div style="text-align:center;">
+            <a href="/dashboard/" style="padding-right: 50px;">Dashboard</a>
+            <a href="/admin" style="padding-right: 50px;">Admin</a>
+            <a href="/logout">Log Out</a>
+        </div>
+        <div style="text-align:center; padding-top: 40px;">
+            <p>First time user? Don't forget to confirm your account details: <a href="/edit-account/">Edit Account Details</a></p>
+        </div>
+        <div style="text-align:center; padding-top: 20px;">
+            <p>Want to view your profile? <a href="/view-account/">View Bank Account</a></p>
+        </div>
+        <div style="text-align:center; padding-top: 20px;">
+            <p>Want to start a payment transfer? <a href="/find-user-id/">Transfer Money</a></p>
+        </div>
+        <div style="text-align:center; padding-top: 20px;">
+            <p>Want to ask a payment from someone? <a href="/find-request-user-id/">Request Money</a></p>
+        </div>
+    {% else %}
+        <div style="text-align: center; padding-top: 20px"><h1>Come Join the Very Good Virtual Bank Family Now!</h1></div>S
+        <div style="text-align: center;">
+            <a style="padding-right: 50px;" href="/login">Log In</a>
+            <a href="/sign-up">Sign Up</a>
+        </div>
+
+    {% endif %}
+{% endblock content %}
+

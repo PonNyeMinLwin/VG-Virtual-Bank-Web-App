@@ -1,0 +1,191 @@
+{% extends 'prefabs/user-dashboard-base.html' %}
+{% load crispy_forms_filters %}
+{% block title %} View Transactions {% endblock title %}
+{% block content %}
+    <section>
+        <div>
+            <div class="container">
+                <div>
+                    <div>
+                        <div class="center-rows" style="text-align: center; padding-top: 50px;">
+                            <h1>View Your Transactions</h1>
+                            <h6>Easily keep an eye on all your different transaction histories, updated in real-time!</h6>
+                            <p>Go back to homepage? <a href="/./">Go Back</a></p>
+                        </div>
+                        <div>
+                            <div style="margin: 10px 10px 10px 10px; border: 2px solid cadetblue; border-radius: 10px; padding: 30px; text-align: center;">
+                                <div style="padding-bottom: 20px;"><h3>Search a Specific Transaction</h3></div>
+                                <form action="" method="POST">
+                                        <div style="padding-bottom: 20px">
+                                            <input type="text" name="transaction_id" style="width: 900px; text-align: center;" placeholder="Enter Transaction ID">
+                                            <button>Select</button>
+                                            <button type="reset"><a style="text-decoration: none; color: black;" href="/dashboard/">See All Transactions</a></button>
+                                            <p style="float: right">{{ query }}</p>
+                                        </div>
+                                </form>
+                            </div>
+                            <br>
+                            <div style="margin: 10px 10px 10px 10px; border: 2px solid cadetblue; border-radius: 10px; padding: 30px;">
+                                <div class="top-area d-flex align-items-center justify-content-between" style="padding-top: 10px;">
+                                    <ul class="nav nav-tabs" role="tablist">
+                                        <li><button class="nav-link active" id="sent-tab" data-bs-toggle="tab" data-bs-target="#sent" type="button" role="tab" aria-controls="sent" aria-selected="true">Payments Sent</button></li>
+                                        <li><button class="nav-link" id="received-tab" data-bs-toggle="tab" data-bs-target="#received" type="button" role="tab" aria-controls="received" aria-selected="false">Payments Received</button></li>
+                                        <li><button class="nav-link" id="request-sent-tab" data-bs-toggle="tab" data-bs-target="#request-sent" type="button" role="tab" aria-controls="request-sent" aria-selected="false">Requests Sent</button></li>
+                                        <li><button class="nav-link" id="request-got-tab" data-bs-toggle="tab" data-bs-target="#request-got" type="button" role="tab" aria-controls="request-got" aria-selected="false">Requests Received</button></li>
+                                    </ul>
+                                    <div class="view-all d-flex align-items-center">
+                                        <a href="javascript:void(0)">View All</a>
+                                    </div>
+                                </div>
+                                <div class="tab-content mt-40" style="text-align: center;">
+                                    <div class="tab-pane fade show active" id="sent" role="tabpanel" aria-labelledby="sent-tab">
+                                        <div class="table-responsive">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">Payment Recipient</th>
+                                                        <th scope="col">Transaction Type</th>
+                                                        <th scope="col">Account ID</th>
+                                                        <th scope="col">Date</th>
+                                                        <th scope="col">Amount</th>
+                                                        <th scope="col">Remaining Balance</th>
+                                                        <th scope="col">Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for payment in payment_history %}
+                                                        <tr data-bs-toggle="modal" data-bs-target="#transactionsMod">
+                                                            <th scope="row">
+                                                                <p>{{ payment.receiver.comment.full_name }}</p>
+                                                            </th>
+                                                            <td>{{ payment.transaction_type|title }}</td>
+                                                            <td>{{ payment.receiver.account.account_id }}</td>
+                                                            <td><p>{{ payment.transaction_created_date|date:"d M, Y h:s" }}</p></td>
+                                                            <td class="text-danger"><p>-{{ payment.amount }} {{ payment.receiver.comment.currency }}</p></td>
+                                                            <td><p>{{ payment.sender.account.balance }} {{ payment.receiver.comment.currency }}</p></td>
+                                                            <td><a href="" style="border: 1px solid; border-radius: 5px; background: pink; padding: 5px; text-decoration: none;">View More Details</a></td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="received" role="tabpanel" aria-labelledby="received-tab">
+                                        <div class="table-responsive">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">Sender</th>
+                                                        <th scope="col">Transaction Type</th>
+                                                        <th scope="col">Account ID</th>
+                                                        <th scope="col">Date</th>
+                                                        <th scope="col">Amount</th>
+                                                        <th scope="col">Remaining Balance</th>
+                                                        <th scope="col">Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for receive in receive_history %}
+                                                        <tr data-bs-toggle="modal" data-bs-target="#transactionsMod">
+                                                            <th scope="row">
+                                                                <p>{{ receive.sender.comment.full_name }}</p>
+                                                            </th>
+                                                            <td>{{ receive.transaction_type|title }}</td>
+                                                            <td>{{ receive.sender.account.account_id }}</td>
+                                                            <td><p>{{ receive.transaction_created_date|date:"d M, Y h:s" }}</p></td>
+                                                            <td class="text-success"><p>+{{ receive.amount }} {{ receive.receiver.comment.currency }}</p></td>
+                                                            <td><p>{{ receive.receiver.account.balance }} {{ receive.receiver.comment.currency }}</p></td>
+                                                            <td><a href="" style="border: 1px solid; border-radius: 5px; background: pink; padding: 5px; text-decoration: none;">View More Details</a></td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="request-sent" role="tabpanel" aria-labelledby="request-sent-tab">
+                                        <div class="table-responsive">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">Request Recipient</th>
+                                                        <th scope="col">Transaction Type</th>
+                                                        <th scope="col">Account ID</th>
+                                                        <th scope="col">Requested Date</th>
+                                                        <th scope="col">Requested Amount</th>
+                                                        <th scope="col">Remaining Balance</th>
+                                                        <th scope="col">Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for sent_requests in request_sent_history %}
+                                                        <tr data-bs-toggle="modal" data-bs-target="#transactionsMod">
+                                                            <th scope="row">
+                                                                <p>{{ sent_requests.receiver.comment.full_name }}</p>
+                                                            </th>
+                                                            <td>{{ sent_requests.transaction_type|title }}</td>
+                                                            <td>{{ sent_requests.receiver.account.account_id }}</td>
+                                                            <td><p>{{ sent_requests.transaction_created_date|date:"d M, Y h:s" }}</p></td>
+                                                            <td style="color: orange;"><p>+{{ sent_requests.amount }} {{ sent_requests.sender.comment.currency }}</p></td>
+                                                            <td><p>{{ sent_requests.sender.account.balance }} {{ sent_requests.sender.comment.currency }}</p></td>
+                                                            <td>
+                                                                {% if sent_requests.transaction_type == "request" %}
+                                                                    <a href="" style="border: 1px solid; border-radius: 5px; background: deepskyblue; padding: 5px; text-decoration: none; color: white;">View</a>
+                                                                    <a href="/delete-transaction/{{ sent_requests.transaction_id }}" style="border: 1px solid; border-radius: 5px; background: red; padding: 5px; text-decoration: none; color: white;">Delete</a>
+                                                                {% elif sent_requests.transaction_type == "request_acc" %}
+                                                                    <a href="" style="border: 1px solid; border-radius: 5px; background: green; padding: 5px; text-decoration: none; color: white;">Settled</a>
+                                                                {% endif %}
+                                                            </td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="request-got" role="tabpanel" aria-labelledby="request-got-tab">
+                                        <div class="table-responsive">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">Request Sender</th>
+                                                        <th scope="col">Transaction Type</th>
+                                                        <th scope="col">Account ID</th>
+                                                        <th scope="col">Requested Date</th>
+                                                        <th scope="col">Requested Amount</th>
+                                                        <th scope="col">Remaining Balance</th>
+                                                        <th scope="col">Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for received_request in request_received_history %}
+                                                        <tr data-bs-toggle="modal" data-bs-target="#transactionsMod">
+                                                            <th scope="row">
+                                                                <p>{{ received_request.sender.comment.full_name }}</p>
+                                                            </th>
+                                                            <td>{{ received_request.transaction_type|title }}</td>
+                                                            <td>{{ received_request.sender.account.account_id }}</td>
+                                                            <td><p>{{ received_request.transaction_created_date|date:"d M, Y h:s" }}</p></td>
+                                                            <td style="color: orange"><p>-{{ received_request.amount }} {{ received_request.sender.comment.currency }}</p></td>
+                                                            <td><p>{{ received_request.receiver.account.balance }} {{ received_request.receiver.comment.currency }}</p></td>
+                                                            <td>
+                                                                {% if received_request.transaction_type == "request" %}
+                                                                    <a href="/request-choice/{{ received_request.sender.account.account_id }}/{{ received_request.transaction_id }}" style="border: 1px solid; border-radius: 5px; background: deepskyblue; padding: 5px; text-decoration: none; color: white;">Choose</a>
+                                                                    <a href="/delete-transaction/{{ received_request.transaction_id }}" style="border: 1px solid; border-radius: 5px; background: red; padding: 5px; text-decoration: none; color: white;">Delete</a>
+                                                                {% elif received_request.transaction_type == "request_acc" %}
+                                                                    <a href="" style="border: 1px solid; border-radius: 5px; background: green; padding: 5px; text-decoration: none; color: white;">Settled</a>
+                                                                {% endif %}
+                                                            </td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock content %}

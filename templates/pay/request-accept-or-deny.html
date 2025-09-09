@@ -1,0 +1,39 @@
+{% extends 'prefabs/user-dashboard-base.html' %}
+{% load crispy_forms_filters %}
+{% block title %} Payment Transfer {% endblock title %}
+{% block content %}
+    <section>
+        <div>
+            <div class="container">
+                <div>
+                    <div>
+                        <div class="center-rows" style="text-align: center; padding-top: 50px;">
+                            <h1>Accept or Deny Payment Request</h1>
+                            <h6>You can easily choose to accept or deny payment requests from other users!</h6>
+                            <p>Go back to dashboard? <a href="/dashboard/">Dashboard</a></p>
+                        </div>
+                        <div class="center-rows" style="text-align: center;">
+                            <div style="margin: 10px 0 10px 0; border: 2px solid cadetblue; border-radius: 10px;">
+                                <div style="padding-bottom: 20px;">
+                                    <div style="padding-top: 20px;">
+                                        <div style="padding-bottom: 30px; padding-top: 30px"><h5 style="font-weight: bold;">{{ account.comment.full_name }} has requested a payment of {{ transaction.amount }} {{ account.comment.currency }} from you.</h5></div>
+                                        <div><p style="font-weight: bold;">Account ID: <span class="">{{ account.account_id }}</span></p></div>
+                                        <div><p style="font-weight: bold;">Email: <span class="">{{ account.user.email }}</span></p></div>
+                                        <form action="{% url 'process-request-choice' account.account_id transaction.transaction_id %}" method="POST">
+                                            {% csrf_token %}
+                                            <div><p style="font-weight: bold;">Remaining Balance: <span class="">{{ request.user.account.balance }}</span></p></div>
+                                            <div style="padding-top: 30px;">
+                                                <button type="submit" style="border-radius: 10px; background: green; padding: 5px; color: white;">Accept Request</button>
+                                                <button style="border-radius: 10px; background: red; padding: 5px; color: white;"><a href="/view-transactions/" style="text-decoration: none; color: black;">Reject Request</a></button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock content %}

@@ -1,0 +1,46 @@
+{% extends 'prefabs/user-dashboard-base.html' %}
+{% load crispy_forms_filters %}
+{% block title %} Request Confirmation {% endblock title %}
+{% block content %}
+    <section>
+        <div>
+            <div class="container">
+                <div>
+                    <div>
+                        <div class="center-rows" style="text-align: center; padding-top: 50px;">
+                            <h1>3/3 Request Money From User ID</h1>
+                            <h3 class="text-success">Step 3: Request Sent Successfully!</h3>
+                            <h6>{{ account.comment.full_name }} have been notified! Sit back and wait for their reply.</h6>
+                            <p>Go back to homepage? <a href="/./">Homepage</a></p>
+                        </div>
+                        <div class="center-rows" style="text-align: center;">
+                            <div style="margin: 10px 0 10px 0; border: 2px solid cadetblue; border-radius: 10px;">
+                                <div style="padding-bottom: 20px;">
+                                    <div style="padding-top: 20px; display: flex; justify-content: space-between;">
+                                        <div style="flex: 1;">
+                                            <div><p><span style="font-weight: bold; border: 1px solid red; padding: 5px">Request Sender Info</span></p></div>
+                                            <div><p style="font-weight: bold;">Request ID: <span class="">{{ transaction.transaction_id }}</span></p></div>
+                                            <div><p style="font-weight: bold;">Account ID: <span class="">{{ request.user.account.account_id }}</span></p></div>
+                                            <div><p style="font-weight: bold;">Full Name: <span class="">{{ request.user.comment.full_name }}</span></p></div>
+                                            <div><p style="font-weight: bold;">Email: <span class="">{{ request.user.email }}</span></p></div>
+                                            <div><p style="font-weight: bold;">Amount Requested: <span class="">{{ transaction.amount }}</span></p></div>
+                                        </div>
+                                        <div style="flex: 1;">
+                                            <div><p><span style="font-weight: bold; border: 1px solid red; padding: 5px">Request Recipient Info</span></p></div>
+                                            <div><p style="font-weight: bold;">Transaction ID: <span class="">{{ transaction.transaction_id }}</span></p></div>
+                                            <div><p style="font-weight: bold;">Account ID: <span class="">{{ account.account_id }}</span></p></div>
+                                            <div><p style="font-weight: bold;">Full Name: <span class="">{{ account.comment.full_name }}</span></p></div>
+                                            <div><p style="font-weight: bold;">Email: <span class="">{{ account.user.email }}</span></p></div>
+                                            <div><p style="font-weight: bold;">Amount Requested: <span class="">{{ transaction.amount }} </span></p></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <p>Make another request? <a href="/find-request-user-id/">Request Money</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock content %}

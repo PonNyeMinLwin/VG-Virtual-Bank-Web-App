@@ -1,0 +1,35 @@
+{% extends "prefabs/base.html" %}
+{% load crispy_forms_filters %}
+{% block title %} Login {% endblock title %}
+{% block content %}
+    {% load static %}
+    <section class="login-reg">
+        <div class="overlay pt-120">
+            <div class="container">
+                <div>
+                    <div>
+                        <div class="center-rows" style="text-align: center;">
+                            <h1>Login Account</h1>
+                            <h3>Welcome to Very Good Virtual Bank!</h3>
+                            <p>New to the VG family? Register an account now! <a href="/sign-up/">Sign Up</a></p>
+                        </div>
+                        <form method="POST">
+                            {% csrf_token %}
+                            <div class="center-rows" style="text-align: center;">
+                                <div style="margin: 10px 10px 10px 10px; border: 2px solid cadetblue; border-radius: 10px; padding: 30px;">
+                                    <div>
+                                        <label>Username: <input type="text" required name="username" id="login-username" placeholder="Enter username here..."></label>
+                                    </div>
+                                    <div>
+                                        <label>Password: <input type="password" required name="password" id="login-username" placeholder="Enter password here..."></label>
+                                    </div>
+                                </div>
+                                <button class="" type="submit">Login</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock content %}
